@@ -1,4 +1,4 @@
- Mortality Rate Modeling Project
+Mortality Rate Modeling Project
 
 Nowadays, there are many ways to determine the overall condition of a country, one of those is to make a good observation of the vital statistics, such as birth and death rates, and those numbers 
 may reveal a lot of underlying issues of a society, especially in the long run. In this project, we will
