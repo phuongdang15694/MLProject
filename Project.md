@@ -1,11 +1,11 @@
-Mortality Rate Modeling Project
+#Mortality Rate Modeling Project
 
 Nowadays, there are many ways to determine the overall condition of a country, one of those is to make a good observation of the vital statistics, such as birth and death rates, and those numbers 
 may reveal a lot of underlying issues of a society, especially in the long run. In this project, we will
 apply machine learning methods in forecasting the mortality rate in Canada through demographic
 and socioeconomic characteristics.
 
-THE DATASET
+##THE DATASET
 
 The data set includes four predictors - that are, people with low-income percentage, a proportion
 of 65-year-olds and over population, and unemployment rate, one response variable - mortality
@@ -23,7 +23,7 @@ onset of Covid-19.
 
 Regarding the response variable, the annual mortality percentage is from Birth and Death Databases and the Centre for Demography, Statistics Canada. 
 
-DATA PREPARATION AND EXPLORATION
+##DATA PREPARATION AND EXPLORATION
 
 Before applying machine learning algorithms, we initially explore the quality and correlations in the dataset. Overall, there are no missing values in all of the database and the quality of data is ranked D, meaning “Acceptable”, and above. We then plot trends of variables over 10 years by provinces. 
 
@@ -93,5 +93,5 @@ As can be seen, there is no rule of thumb regarding good or bad RMSE because it 
 
  Figure 8. Linear model  between predicted values and observed values
 
- Outcomes and Limitations
+ ##Outcomes and Limitations
 Some limitations remain with regard to this model. To begin with, it  has low interpretability as despite Principal components are linear combinations of the features from the original data, they are not as easy to interpret.  While the model effectively predicts the mortality rate using the provided dataset, it is not easily determine the individual contribution of each regressor to the mortality. In lieu of PCA, we can employ backward or stepwise selection using Akaike information criterion (AIC) or the Bayesian information criterion (BIC). Secondly, there is still an issue with the condition of heteroscedasticity, which requires a transformation of response variables using Box-Cox method, which aims to find a more exact form for the relation. Finally, the potential concern about overfitting may happen due to the small size of the dataset. In spite of all these constraints, we have constructed a linear model to predict the mortality rate of Canada with give predictors. 
