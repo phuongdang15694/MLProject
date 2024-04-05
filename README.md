@@ -1,4 +1,6 @@
 # Comparison of Machine Learning Classification Models for Common Flu Prediction
+ April 2024
+================
 ## Introduction
 In recent year, public health research has been learning about understanding the underlying causes that influence how infectious diseases spread, including the common flu. This report focuses on analyzing biologic characteristics as well as lifestyle and behavioral factors that might impact on the likelihood of adults catching the common flu from December 1 to March 31. These variables include:
 
