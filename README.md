@@ -35,7 +35,9 @@ flu_test_noresponse = subset(flu_test,select=-flu)
 ```
 
 Model Building
+
 ![image](https://github.com/phuongdang15694/Machine-Learning-Project/assets/103254136/c5d46cde-6635-43ed-88f4-f684d7b32ebc)
+
 ![image](https://github.com/phuongdang15694/Machine-Learning-Project/assets/103254136/942ec7fd-0564-4010-8310-a801b6356a4e)
 
 In this set of graphs, we’re looking at class distributions of all 7 predictors by the response Flu.
