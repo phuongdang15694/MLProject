@@ -41,8 +41,8 @@ Model Building
 ![image](https://github.com/phuongdang15694/Machine-Learning-Project/assets/103254136/942ec7fd-0564-4010-8310-a801b6356a4e)
 
 In this set of graphs, we’re looking at class distributions of all 7 predictors by the response Flu.
-> In the sugar panel, following by bmi panel, there are just minor separation or boundaries.
-> In the other panels, we are unable to identify the significant differences.
+- In the sugar panel, following by bmi panel, there are just minor separation or boundaries.
+- In the other panels, we are unable to identify the significant differences.
 
 ## LDA
 We use function `lda` (from package `MASS`)
