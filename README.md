@@ -36,6 +36,11 @@ flu_train <- flu_data[split_data, ]
 flu_test <- flu_data[!split_data, ]
 flu_test_noresponse = subset(flu_test,select=-flu)
 ```
+ROC curves plot the
+True positive rate  (*sensitivity*) vs. False positives  (*1-specificity)
+for different values of c.
+
+Before we begin to train the dataset, we probably want to look at which predictors / factors are likely to be effective. We’ll use the `featurePlot()` function from the `caret()` library
 
 Model Building
 
@@ -124,3 +129,6 @@ gt(data.frame("Flu"=round(qda_train$prior["1"],4),"No Flu"= round(qda_train$prio
 | 0.335   |  0.665 | 
 
 Table: Prior probability
+
+## Gaussian naive Bayesian classifier
+
