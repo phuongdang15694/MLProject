@@ -21,7 +21,7 @@ In recent year, public health research has been learning about understanding the
 
 - Flu Incidence (Response Variable): Whether the person contracted the common flu, which is the primary outcome of interest
 
-The purpose of this study is to establish and evaluate distinct classification models to predict flu incidence using the factors mentioned above. This study employs *logistic regression*, *linear discriminant analysis* and *quadratic discriminant analysis*, and *Gaussian naive Bayesian* classifiers to identify important factors that can predict the flu then assess how well each model does so. The findings of this study may be useful in interventions that change controllable behaviours and provide advice to people who are more likely to contract the flu.
+The purpose of this study is to establish and evaluate distinct classification models to predict flu incidence using the factors mentioned above. This study employs <strong>*logistic regression*, *linear discriminant analysis* and *quadratic discriminant analysis*, and *Gaussian naive Bayesian* </strong> classifiers to identify important factors that can predict the flu then assess how well each model does so. The findings of this study may be useful in interventions that change controllable behaviours and provide advice to people who are more likely to contract the flu.
 
 In the following sections, we will detail the methodology employed in cleaning the data, building the predictive models, and evaluating their performance. The report will conclude with a summary of the findings and recommendations based on the analysis.
 ## Preliminary Analysis and Data Cleaning
