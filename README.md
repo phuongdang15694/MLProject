@@ -1,4 +1,4 @@
-Comparison of ML Classification Models for Common Flu Prediction
+Comparison of ML Classification Models for Flu Prediction
 ================
  
 *April 2024*
