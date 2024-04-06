@@ -47,18 +47,33 @@ In this set of graphs, we’re looking at class distributions of all 7 predictor
 - In the sugar panel, following by bmi panel, there are just minor separation or boundaries.
 - In the other panels, we are unable to identify the significant differences.
 
-## LDA
-We use function `lda` (from package `MASS`)
-```{r }
-lda_train = lda(flu~. , data=flu_train)
-lda_train
+## Linear Discriminant Analysis (LDA)
+LDA is used find a linear combination of features that characterizes or
+separate two or more classes of objects or events
 
+We use function `lda()` (from package `MASS`)
+```{r }
+#Train on training set with LDA model
+lda_train = lda(flu~. , data=flu_train)
+lda_train #LDA model
+
+#Apply on the testing set
 lda_predict = predict(lda_train, flu_test_noresponse)
+
+#Measure how well the model performs on the test set
 lda.cm = table(flu_test$flu,lda_predict$class)
 lda_metrics=confusionMatrix(lda.cm,positive="1")
-
 lda_roc = roc(flu_test$flu, lda_predict$posterior[,2])
 
+```
+Prob of Flu and Non-Flu by LDA
+
+The class-specific prior is simply the proportion of data points that
+belong to the class. The class-specific mean vector is the average of
+the input variables that belong to the class. 
+
+```{r}
+gt(data.frame("Flu"=round(lda_train$prior["1"],4),"No Flu"= round(lda_train$prior["0"],4)))%>%tab_header("Prior probability")
 ```
 
 | Flu     | No Flu | 
@@ -69,9 +84,43 @@ Table: Prior probability
 
 The linear combination of Exercise, Sugar, Work, Handwash, BMI, Age, and Smoking=Yes that are used to form the LDA decision rule, which is:
 
-0.062xExercise + 0.05xSugar - 0.019xWork - 0.035xHandwash + 0.091xBMI + 0.02xAge + 0.375xSmoking
+log()0.062xExercise + 0.05xSugar - 0.019xWork - 0.035xHandwash + 0.091xBMI + 0.02xAge + 0.375xSmoking
+
+The `plot()` function can be used to used to plot the linear discriminants
+using the equation above for each of the training observations.
 
 ![image](https://github.com/phuongdang15694/Machine-Learning-Project/assets/103254136/1ab3eef4-8e24-4969-a3b1-0d52bb44ab0f)
 
+Comment: The zero is the decision boundary.
 
+## Quadratic Discriminant Analysis (QDA)
+ Like LDA, Quadratic Discriminant Analysis (QDA) is another
+generative model that assumes that each class follows a Gaussian distribution.
 
+ The only difference is the class-specific variances are different.
+
+We use function `qda()` (from package `MASS`) to train dataset with QDA
+
+```{r }
+#train dataset
+qda_train = qda(flu~. , data=flu_train)
+
+#predict with test set
+qda_predict = predict(qda_train, flu_test_noresponse)
+
+#Measure how well the model performs on the test set
+qda.cm = table(flu_test$flu,qda_predict$class)
+qda_metrics=confusionMatrix(qda.cm,positive="1")
+qda_roc = roc(flu_test$flu, qda_predict$posterior[,2])
+```
+
+Prob of Flu and Non Flu 
+
+```{r  include=FALSE, warning=FALSE, message = FALSE, comment=""}
+gt(data.frame("Flu"=round(qda_train$prior["1"],4),"No Flu"= round(qda_train$prior["0"],4)))%>%tab_header("Prior probability")
+```
+| Flu     | No Flu | 
+| :-----: | :----: | 
+| 0.335   |  0.665 | 
+
+Table: Prior probability
