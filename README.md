@@ -131,4 +131,25 @@ gt(data.frame("Flu"=round(qda_train$prior["1"],4),"No Flu"= round(qda_train$prio
 Table: Prior probability
 
 ## Gaussian naive Bayesian classifier
+The Gaussian Naive Bayes classifier assumes x variables are independent within a class, implying diagonal covariance matrices.
+
+– Pros
+
+* It is easy and fast to predict class of test data set. It also perform
+well in multi-class prediction.
+
+* When assumption of independence holds, the NB classifier performs better than logistic regression with few data.
+  
+– Cons
+
+* If a categorical variable has a category in the test set, but not observed in the training set, then the model will assign a zero probability and will be unable to make a prediction. If so, use a smoothing technique is called Laplace estimation.
+  
+* There is a strong set of assumptions on the distribution of the
+features such as normal, multinomial etc.
+
+* There is also the assumption of independence in predictors which
+is quite rare.
+
+We use naive_bayes() function.
+
 
