@@ -53,8 +53,10 @@ In this set of graphs, we’re looking at class distributions of all 7 predictor
 - In the other panels, we are unable to identify the significant differences.
 
 ## Linear Discriminant Analysis (LDA)
-LDA is used find a linear combination of features that characterizes or
-separate two or more classes of objects or events
+- LDA is used find a linear combination of features that characterizes or
+separate two or more classes of objects or events.
+
+- LDA assumes that the covariance matrix across classes is the same.
 
 We use function `lda()` (from package `MASS`)
 ```{r }
@@ -102,7 +104,8 @@ Comment: The zero is the decision boundary.
  Like LDA, Quadratic Discriminant Analysis (QDA) is another
 generative model that assumes that each class follows a Gaussian distribution.
 
- The only difference is the class-specific variances are different.
+The only difference is the class-specific variances are different. 
+=> QDA does not assume constant covariance matrix across classes
 
 We use function `qda()` (from package `MASS`) to train dataset with QDA
 
@@ -130,6 +133,17 @@ gt(data.frame("Flu"=round(qda_train$prior["1"],4),"No Flu"= round(qda_train$prio
 
 Table: Prior probability
 
+*LDA and QDA*
+
+– Pros
+* It is simple, fast and portable. Outperforms logistic regression
+when its assumptions are met.
+
+– Cons
+* It requires normal distribution assumption on features/predictors.
+* QDA can get computationally expensive with many predictors.
+* QDA is that it cannot be used as a dimensional reduction technique.
+  
 ## Gaussian naive Bayesian classifier
 The Gaussian Naive Bayes classifier assumes x variables are independent within a class, implying diagonal covariance matrices.
 
@@ -151,5 +165,6 @@ features such as normal, multinomial etc.
 is quite rare.
 
 We use naive_bayes() function.
+
 
 
