@@ -133,7 +133,7 @@ gt(data.frame("Flu"=round(qda_train$prior["1"],4),"No Flu"= round(qda_train$prio
 
 Table: Prior probability
 
-*LDA and QDA*
+<strong> * Summary of LDA and QDA* </strong>
 
 – Pros
 * It is simple, fast and portable. Outperforms logistic regression
@@ -165,6 +165,20 @@ features such as normal, multinomial etc.
 is quite rare.
 
 We use naive_bayes() function.
+```{r}
+#Build model and predict with NB
+nb_train =  naive_bayes(flu~. , data=flu_train)
+nb_train
+nb_predict = predict(nb_train,flu_test_noresponse)
 
+#Implement Result
+nb_metrics=confusionMatrix(factor(nb_predict),factor(flu_test$flu))
+nb_predict_prob = predict(nb_train,flu_test_noresponse, type = "prob")
+nb_roc = roc(flu_test$flu, nb_predict_prob[,2])
+gt(data.frame("Flu"=round(nb_train$prior["1"],3),"No Flu"= round(nb_train$prior["0"],3)))%>%tab_header("Prior probability")
+```
+| Flu     | No Flu | 
+| :-----: | :----: | 
+| 0.335   |  0.665 | 
 
 
