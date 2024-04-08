@@ -59,6 +59,20 @@ We model πi using the log-odds ratio, also called the logit function:
 
 ![image](https://github.com/phuongdang15694/Machine-Learning-Project/assets/103254136/32b57931-431d-4175-b715-29e5092f5157)
 
+We use `glm` function  
+```{r}
+#train model
+logit_train = glm(flu ~ ., data = flu_train, family = "binomial")
+logit_predict = predict(logit_train,flu_test_noresponse,type = "response")
+#Confusion Matrix
+classify50 <- ifelse(logit_predict > 0.5, "1", "0")
+cm= table(Predicted = classify50, Actual = flu_test$flu)
+logit_metrics=confusionMatrix(cm,positive = "1")
+#ROC
+logit_roc = roc(flu_test$flu, logit_predict)
+```
+Logistic model: 
+logit= -10.02224853 + 0.083xExercise +	0.064xSugar - 0.025xWork - 0.058xHandwash	+ 0.124xBMI +	0.026xAge + 0.448xSmoking
 
 ## Linear Discriminant Analysis (LDA)
 - LDA is used find a linear combination of features that characterizes or
