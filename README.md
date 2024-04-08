@@ -203,6 +203,33 @@ gt(data.frame("Flu"=round(nb_train$prior["1"],3),"No Flu"= round(nb_train$prior[
 | :-----: | :----: | 
 | 0.335   |  0.665 | 
 
- 
+ ## Model Evaluation
+```{r}
+#Prep
+cm_models = data.frame("Models"=c("LDA","QDA","Naive Bayes","Logistic"), 
+                       "Accuracy"= round(c(lda_metrics$overall["Accuracy"],qda_metrics$overall["Accuracy"],
+                                           nb_metrics$overall["Accuracy"],logit_metrics$overall["Accuracy"]),3),
+                   "Sensitivity" = round(c(lda_metrics$byClass["Sensitivity"],qda_metrics$byClass["Sensitivity"],
+                                            nb_metrics$byClass["Sensitivity"],logit_metrics$byClass["Sensitivity"]),3),
+                   "Specificity" = round(c(lda_metrics$byClass["Specificity"],qda_metrics$byClass["Specificity"],
+                                            nb_metrics$byClass["Specificity"],logit_metrics$byClass["Specificity"]),3)
+)
+cm_models %>%gt() %>% tab_header("Metric Comparison")
+```
+
+| Models     | Accuracy    |Sensitivity |Specificity |
+| :-----:    | :----:      | :----:     | :----:     |
+| LDA        |  0.750      | 0.691      | 0.775      | 
+| QDA        |  0.706      | 0.603      | 0.760      | 
+|Naive Bayes |  0.750      | 0.807      | 0.651      | 
+| Logistic   |  0.741      | 0.566      | 0.841      | 
+
+ Table: Metric Comparison
+
+ ```{r}
+auc_models= data.frame ("Models"=c("LDA","QDA","NaiveBayes","Logistic"),
+"AUC"=c(auc(lda_roc),auc(qda_roc),auc(nb_roc),auc(logit_roc)))
+auc_models %>% gt() %>% tab_header("AUC Comparison")
+```
 
 
