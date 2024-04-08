@@ -256,5 +256,5 @@ Regarding ROC curves, although QDA seems not as good as others, it’s not signi
 
 AUC of different models appear to be not different significantly from one another.
 
-##Summary
+## Summary
 Based on analysis above, we believe that all models act quite good similarly. However,  LDA appears to be quite better than other models. 
