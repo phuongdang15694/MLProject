@@ -28,7 +28,9 @@ In the following sections, we will detail the methodology employed in cleaning t
 ### Data Completeness and Accuracy Verification
 The initial step in data analysis involved preprocessing and cleaning thoroughly the data. Our review revealed that the dataset was mostly complete, with a few exceptions in specific variables that needed attention. 
 
-We discovered that there are several “0” values in some features. Although this error is acceptable in other features, it is illogical in BMI. Therefore, we decided to replace these anomalous values with 29 (which appears to be the approximate mean and median of BMI calculated from the remaining entries in the dataset). This approach ensured that our subsequent analysis would not be skewed by these outliers. Regarding other predictors’ anomalies, we have no proof whether they are inaccurate or not, so we decided to maintain their original values.
+We discovered that there are several “0” values in some features. Although this error is acceptable in other features, it is illogical in BMI. Therefore, we decided to replace these anomalous values with 29 (which appears to be the approximate mean and median of BMI calculated from the remaining entries in the dataset). 
+
+This approach ensured that our subsequent analysis would not be skewed by these outliers. Regarding other predictors’ anomalies, we have no proof whether they are inaccurate or not, so we decided to maintain their original values.
 ### Data Import and Preparation
 The dataset then was splitted into 2 distinct sets, which are training and testing set, with a ratio of 7:3 respectively.
 ```{r}
