@@ -225,7 +225,12 @@ cm_models %>%gt() %>% tab_header("Metric Comparison")
 | Logistic   |  0.741      | 0.566      | 0.841      | 
 
  Table: Metric Comparison
-
+ 
+ *Comments*
+ - Sensitivity here implies that the model can correctly identify most patients who have the disease. Therefore, we should choose Naive Bayes in scenarios where missing a positive case has serious consequences, such as screening at risk areas in epidemic.
+ - On the other hand, specificity implies correctly recognizing individuals who are not at risk of contracting the flu. Thus, we should choose Logistic regression when false positives lead to significant costs, such as vaccines distribution - who really needs flu shot when there is a shortage.
+ - Accuracy gives you an overall success rate, but it might not show how well the model really works.
+   
  ```{r}
 auc_models= data.frame ("Models"=c("LDA","QDA","NaiveBayes","Logistic"),
 "AUC"=c(auc(lda_roc),auc(qda_roc),auc(nb_roc),auc(logit_roc)))
@@ -237,3 +242,8 @@ auc_models %>% gt() %>% tab_header("AUC Comparison")
 | QDA         |  0.7911093 |
 | Naive Bayes |  0.8089738 |
 | Logistic    |  0.8149564 |
+
+```{r}
+ggroc(list(lda=lda_roc,qda = qda_roc,nb=nb_roc, logreg= logit_roc))+theme_bw()+ggtitle("ROC Curve")
+```
+![image](https://github.com/phuongdang15694/Machine-Learning-Project/assets/103254136/96ba06fa-44a3-4a03-ab55-278ff0ae92b0)
