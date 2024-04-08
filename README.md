@@ -251,3 +251,10 @@ auc_models %>% gt() %>% tab_header("AUC Comparison")
 ggroc(list(lda=lda_roc,qda = qda_roc,nb=nb_roc, logreg= logit_roc))+theme_bw()+ggtitle("ROC Curve")
 ```
 ![image](https://github.com/phuongdang15694/Machine-Learning-Project/assets/103254136/96ba06fa-44a3-4a03-ab55-278ff0ae92b0)
+
+Regarding ROC curves, although QDA seems not as good as others, it’s not significant. Therefore, we conclude that all the models are quite similar.
+
+AUC of different models appear to be not different significantly from one another.
+
+##Summary
+Based on analysis above, we believe that all models act quite good similarly. However,  LDA appears to be quite better than other models. 
