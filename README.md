@@ -51,6 +51,14 @@ Model Building
 In this set of graphs, we’re looking at class distributions of all 7 predictors by the response Flu.
 - In the sugar panel, following by bmi panel, there are just minor separation or boundaries.
 - In the other panels, we are unable to identify the significant differences.
+  
+## Logistic regression
+Logistic regression have mostly been used to estimate class probabilities.
+
+We model πi using the log-odds ratio, also called the logit function: 
+
+![image](https://github.com/phuongdang15694/Machine-Learning-Project/assets/103254136/32b57931-431d-4175-b715-29e5092f5157)
+
 
 ## Linear Discriminant Analysis (LDA)
 - LDA is used find a linear combination of features that characterizes or
@@ -180,5 +188,7 @@ gt(data.frame("Flu"=round(nb_train$prior["1"],3),"No Flu"= round(nb_train$prior[
 | Flu     | No Flu | 
 | :-----: | :----: | 
 | 0.335   |  0.665 | 
+
+ 
 
 
