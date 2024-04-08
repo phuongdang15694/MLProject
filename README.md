@@ -231,5 +231,9 @@ auc_models= data.frame ("Models"=c("LDA","QDA","NaiveBayes","Logistic"),
 "AUC"=c(auc(lda_roc),auc(qda_roc),auc(nb_roc),auc(logit_roc)))
 auc_models %>% gt() %>% tab_header("AUC Comparison")
 ```
-
-
+| Models      | AUC        | 
+| :-----:     | :----:     | 
+| LDA         |  0.8162027 | 
+| QDA         |  0.7911093 |
+| Naive Bayes |  0.8089738 |
+| Logistic    |  0.8149564 |
