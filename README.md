@@ -217,7 +217,8 @@ cm_models = data.frame("Models"=c("LDA","QDA","Naive Bayes","Logistic"),
                                             nb_metrics$byClass["Sensitivity"],logit_metrics$byClass["Sensitivity"]),3),
                    "Specificity" = round(c(lda_metrics$byClass["Specificity"],qda_metrics$byClass["Specificity"],
                                             nb_metrics$byClass["Specificity"],logit_metrics$byClass["Specificity"]),3)
-)
+                      )
+
 cm_models %>%gt() %>% tab_header("Metric Comparison")
 ```
 
