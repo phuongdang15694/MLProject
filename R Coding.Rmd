@@ -1,0 +1,214 @@
+---
+title: "Lab 3 - Thuy Ha Phuong Dang"
+output:
+  pdf_document: default
+  word_document: default
+---
+## Introduction
+
+In recent year, public health research has been learning about understanding the underlying causes that influence how infectious diseases spread, including the common flu. This report focuses on analyzing biologic characteristics as well as lifestyle and behavioral factors that might impact on the likelihood of adults catching the common flu from December 1 to March 31. These variables include:
+
+Exercise: Estimated weekly hours of physical activity
+
+Sugar Consumption: The estimated amount of sugar consumed per day
+
+Work Hours: The estimated weekly average number of hours worked
+
+Handwashing Frequency: The number of times an adult reports washing their hands each day.
+
+Body Mass Index (BMI): A person's BMI as of December 1.
+
+Age: The individual's age.
+
+Smoking Status: Indicates whether the individual smokes, including both traditional smoking and vaping
+
+Flu Incidence (Response Variable): Whether the person contracted the common flu, which is the primary outcome of interest
+
+
+The goal of this study is to develop and test several classification models to predict flu incidence based on the aforementioned factors. This study uses logistic regression, linear and quadratic discriminant analysis, and Gaussian naive Bayesian classifiers to find important factors that can predict the flu and rate how well each model does at doing that. The results of this study could help with interventions that change behaviours that can be changed and give advice to people who are more likely to get the flu.
+
+
+In the following sections, we will detail the methodology employed in cleaning the data, building the predictive models, and evaluating their performance. The report will conclude with a summary of the findings and recommendations based on the analysis.
+
+
+## Preliminary Analysis and Data Cleaning
+### Data Completeness and Accuracy Verification
+The initial step in data analysis involved preprocessing and cleaning thoroughly the data. Our review revealed that the dataset was mostly complete, with a few exceptions in specific variables that needed attention. We discovered that there are several "0" values in some features. Although this error is acceptable in other features, it is illogical in BMI. Therefore, we decided to replace these anomalous values with 29 (which appears to be the approximate mean and median of BMI calculated from the remaining entries in the dataset). This approach ensured that our subsequent analysis would not be skewed by these outliers. Regarding other predictors' anomalies, we have no proof whether they are inaccurate or not, so we decided to maintain their original values.
+
+
+### Data Import and Preparation
+The dataset then was splitted into 2 distinct sets, which are training and testing set, with a ratio of 7:3 respectively. 
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message = FALSE,echo = TRUE)
+library(caret)
+library(dplyr)
+library(e1071)
+library(MASS)
+library(pROC)
+library(naivebayes)
+library(MASS)
+library(gt)
+
+```
+
+
+
+```{r  echo= FALSE,warning=FALSE, message = FALSE,include=FALSE, results='hide'}
+flu_data= read.csv("D:\\OC\\Semester 3\\Stat 311\\Lab\\Lab 3\\fludata.csv")
+flu_data <- as_tibble(flu_data)
+flu_data$flu <- as.factor(flu_data$flu)
+
+set.seed(123)
+split_data <- sample(c(TRUE, FALSE), nrow(flu_data),replace = TRUE, prob = c(0.7,0.3))
+flu_train <- flu_data[split_data, ]
+flu_test <- flu_data[!split_data, ]
+flu_test_noresponse = subset(flu_test,select=-flu)
+```
+### Model Building
+
+
+```{r  echo= FALSE,warning=FALSE, message = FALSE, comment="", fig.show="hold"}
+featurePlot(x = flu_train[, c("exercise", "sugar", "work","wash","bmi", "age","smoke")],
+y = flu_train$flu,
+plot = "density",
+scales = list(x = list(relation = "free"),
+y = list(relation = "free")),
+adjust = 1,
+pch = "|",
+layout = c(2, 2),
+auto.key = list(columns = 2))
+
+
+```
+In this set of graphs, we’re looking at class distributions of all 7 predictors by the response Flu.
+
+ In the sugar panel, following by bmi panel, there are just minor separation or boundaries.
+ 
+ In the other panels, we are unable to identify the significant differences.
+
+
+
+#### LDA
+
+
+```{r echo=FALSE, warning=FALSE, message = FALSE,include=FALSE, results='hide'}
+lda_train = lda(flu~. , data=flu_train)
+lda_train
+
+lda_predict = predict(lda_train, flu_test_noresponse)
+lda.cm = table(flu_test$flu,lda_predict$class)
+lda_metrics=confusionMatrix(lda.cm,positive="1")
+
+lda_roc = roc(flu_test$flu, lda_predict$posterior[,2])
+
+```
+
+```{r echo=FALSE, warning=FALSE, message = FALSE, comment=""}
+#The priors are: 
+gt(data.frame("Flu"=round(lda_train$prior["1"],4),"No Flu"= round(lda_train$prior["0"],4)))%>%tab_header("Prior probability")
+gt(data.frame ("Exercise" = round(lda_train$scaling["exercise",],3),"Sugar"=round(lda_train$scaling["sugar",],3),
+               "Work"=round(lda_train$scaling["work",],3),"Handwash"=round(lda_train$scaling["wash",],3),
+               "BMI"=round(lda_train$scaling["bmi",],3),"Age"=round(lda_train$scaling["age",],3),
+               "Smoking"=round(lda_train$scaling["smoke",],3)))%>% tab_header("Coefficient")
+
+```
+
+The linear combination of Exercise, Sugar, Work, Handwash,	BMI,	Age, and Smoking=Yes that are used to form the LDA decision rule, which is:
+
+ 0.062xExercise +	0.05xSugar - 0.019xWork - 0.035xHandwash	+ 0.091xBMI +	0.02xAge + 0.375xSmoking
+ 
+```{r echo=FALSE, warning=FALSE, message = FALSE}
+plot(lda_train)
+```
+
+             
+
+#### QDA
+
+```{r echo=FALSE, warning=FALSE, message = FALSE,include=FALSE, results='hide'}
+qda_train = qda(flu~. , data=flu_train)
+qda_train
+qda_predict = predict(qda_train, flu_test_noresponse)
+qda.cm = table(flu_test$flu,qda_predict$class)
+qda_metrics=confusionMatrix(qda.cm,positive="1")
+qda_roc = roc(flu_test$flu, qda_predict$posterior[,2])
+
+```
+
+```{r  include=FALSE, warning=FALSE, message = FALSE, comment=""}
+gt(data.frame("Flu"=round(qda_train$prior["1"],4),"No Flu"= round(qda_train$prior["0"],4)))%>%tab_header("Prior probability")
+
+```
+
+
+### Gaussian naive Bayesian classifier
+```{r echo=FALSE, warning=FALSE, message = FALSE,include=FALSE, results='hide'}
+nb_train =  naive_bayes(flu~. , data=flu_train)
+nb_train
+nb_predict = predict(nb_train,flu_test_noresponse)
+nb_metrics=confusionMatrix(factor(nb_predict),factor(flu_test$flu))
+
+nb_predict_prob = predict(nb_train,flu_test_noresponse, type = "prob")
+nb_roc = roc(flu_test$flu, nb_predict_prob[,2])
+
+```
+
+```{r}
+gt(data.frame("Flu"=round(nb_train$prior["1"],3),"No Flu"= round(nb_train$prior["0"],3)))%>%tab_header("Prior probability")
+
+```
+
+#### Logistic regression classifier
+```{r echo=FALSE, warning=FALSE, message = FALSE,include=FALSE, results='hide'}
+logit_train = glm(flu ~ ., data = flu_train, family = "binomial")
+logit_predict = predict(logit_train,flu_test_noresponse,type = "response")
+#Confusion Matrix
+classify50 <- ifelse(logit_predict > 0.5, "1", "0")
+cm= table(Predicted = classify50, Actual = flu_test$flu)
+logit_metrics=confusionMatrix(cm,positive = "1")
+
+#ROC
+logit_roc = roc(flu_test$flu, logit_predict)
+
+```
+
+```{r  warning=FALSE, message = FALSE, comment=""}
+gt(data.frame("Variable"=c("Intercept","Exercise","Sugar","Work","Handwash","BMI","Age","Smoke"),"Value"=round(logit_train$coefficients,3)))%>% tab_header("Coefficient")
+```
+logit= -10.02224853 + 0.083xExercise +	0.064xSugar - 0.025xWork - 0.058xHandwash	+ 0.124xBMI +	0.026xAge + 0.448xSmoking
+
+### Model Evaluation
+
+
+```{r  Comparison, echo=FALSE, warning=FALSE, message = FALSE}
+cm_models = data.frame("Models"=c("LDA","QDA","Naive Bayes","Logistic"), 
+                       "Accuracy"= round(c(lda_metrics$overall["Accuracy"],qda_metrics$overall["Accuracy"],
+                                           nb_metrics$overall["Accuracy"],logit_metrics$overall["Accuracy"]),3),
+                   "Sensitivity" = round(c(lda_metrics$byClass["Sensitivity"],qda_metrics$byClass["Sensitivity"],
+                                            nb_metrics$byClass["Sensitivity"],logit_metrics$byClass["Sensitivity"]),3),
+                   "Specificity" = round(c(lda_metrics$byClass["Specificity"],qda_metrics$byClass["Specificity"],
+                                            nb_metrics$byClass["Specificity"],logit_metrics$byClass["Specificity"]),3)
+)
+cm_models %>%gt() %>% tab_header("Metric Comparison")
+```
+> Sensitivity here implies that the model can correctly identify most patients who have the disease. Therefore, we should choose Naive Bayes in scenarios where missing a positive case has serious consequences, such as screening at risk areas in epidemic.
+
+> On the other hand, specificity implies correctly recognizing individuals who are not at risk of contracting the flu. Thus, we should choose Logistic regression when false positives lead to significant costs, such as vaccines distribution - who really needs flu shot when there is a shortage. 
+
+> Accuracy gives you an overall success rate, but it might not show how well the model really works.
+
+```{r echo=FALSE, warning=FALSE, message = FALSE, comment=""}
+ggroc(list(lda=lda_roc,qda = qda_roc,nb=nb_roc, logreg= logit_roc))+theme_bw()+ggtitle("ROC Curve")
+auc_models= data.frame ("Models"=c("LDA","QDA","Naive Bayes","Logistic"),"AUC"=c(auc(lda_roc),auc(qda_roc),auc(nb_roc),auc(logit_roc)))
+auc_models %>% gt() %>% tab_header("AUC Comparison")
+```
+Regarding ROC curves, although QDA seems not as good as others, it's not significant. Therefore, we conclude that all the models are quite similar. 
+
+AUC of different models appear to be not different significantly from one another.
+
+
+
+
